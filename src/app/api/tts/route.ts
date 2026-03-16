@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import Replicate from "replicate";
+import { EdgeTTS } from "edge-tts-universal";
 
 export const maxDuration = 60;
+
+const KOREAN_VOICE = "ko-KR-SunHiNeural";
 
 export async function POST(request: NextRequest) {
   try {
@@ -29,44 +31,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const apiToken = process.env.REPLICATE_API_TOKEN;
-    if (!apiToken) {
-      return NextResponse.json(
-        { error: "REPLICATE_API_TOKEN 환경 변수가 설정되지 않았습니다." },
-        { status: 500 }
-      );
-    }
+    const tts = new EdgeTTS(trimmedText, KOREAN_VOICE, {
+      rate: "+10%",
+      volume: "+0%",
+      pitch: "+0Hz",
+    });
 
-    const replicate = new Replicate({ auth: apiToken });
+    const result = await tts.synthesize();
+    const audioBuffer = Buffer.from(await result.audio.arrayBuffer());
 
-    const output = await replicate.run(
-      "cjwbw/melotts:2e4d356f3715d98c183ef097ce2cf410def83ca9fbbdd5f8a32ba056123e6a6f",
-      {
-        input: {
-          text: trimmedText,
-          language: "KR",
-          speaker: "",
-          speed: 1.2,
-        },
-      }
-    );
-
-    let audioUrl: string | undefined;
-    if (typeof output === "string") {
-      audioUrl = output;
-    } else {
-      const out = output as { url?: string | (() => string) };
-      audioUrl = typeof out?.url === "function" ? out.url() : out?.url;
-    }
-
-    if (!audioUrl) {
-      return NextResponse.json(
-        { error: "TTS 생성에 실패했습니다." },
-        { status: 500 }
-      );
-    }
-
-    return NextResponse.json({ audioUrl });
+    return new NextResponse(audioBuffer, {
+      headers: {
+        "Content-Type": "audio/mpeg",
+        "Content-Disposition": "attachment; filename=tts.mp3",
+      },
+    });
   } catch (error) {
     console.error("TTS API Error:", error);
     return NextResponse.json(

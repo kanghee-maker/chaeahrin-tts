@@ -9,7 +9,7 @@ export default function Home() {
             채아린 TTS
           </h1>
           <p className="text-gray-600">
-            MeloTTS 기반 한국어 음성 생성 · 배경 음악 믹싱
+            Microsoft Edge TTS 기반 무료 한국어 음성 생성 · 배경 음악 믹싱
           </p>
         </div>
         <TtsGenerator />

@@ -27,6 +27,7 @@ export default function TtsGenerator() {
 
     setLoading(true);
     setError(null);
+    if (ttsUrl?.startsWith("blob:")) URL.revokeObjectURL(ttsUrl);
     setTtsUrl(null);
 
     try {
@@ -36,13 +37,14 @@ export default function TtsGenerator() {
         body: JSON.stringify({ text: text.trim() }),
       });
 
-      const data = await res.json();
-
       if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
         throw new Error(data.error || "TTS 생성에 실패했습니다.");
       }
 
-      setTtsUrl(data.audioUrl);
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      setTtsUrl(url);
 
       const musicRes = await fetch(
         `/api/music?text=${encodeURIComponent(text)}&mood=${selectedMood}`
@@ -64,13 +66,8 @@ export default function TtsGenerator() {
       setError(null);
 
       try {
-        const ttsFetchUrl =
-          ttsUrl.startsWith("http") && !ttsUrl.includes(window.location.host)
-            ? `/api/proxy-audio?url=${encodeURIComponent(ttsUrl)}`
-            : ttsUrl;
-
         const [ttsResponse, musicResponse] = await Promise.all([
-          fetch(ttsFetchUrl),
+          fetch(ttsUrl),
           fetch(musicUrl),
         ]);
 

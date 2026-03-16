@@ -9,10 +9,10 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "edge-tts-universal": "^1.4.0",
     "next": "16.1.6",
     "react": "19.2.3",
-    "react-dom": "19.2.3",
-    "replicate": "^1.4.0"
+    "react-dom": "19.2.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
