@@ -18,6 +18,7 @@ export default function TtsGenerator() {
   const [musicTracks, setMusicTracks] = useState<MusicTrack[]>([]);
   const [selectedMood, setSelectedMood] = useState<MoodType>("neutral");
   const [musicVolume, setMusicVolume] = useState(0.3);
+  const [voice, setVoice] = useState<"sunhi" | "injoon">("sunhi");
 
   const generateTts = useCallback(async () => {
     if (!text.trim()) {
@@ -34,7 +35,7 @@ export default function TtsGenerator() {
       const res = await fetch("/api/tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: text.trim() }),
+        body: JSON.stringify({ text: text.trim(), voice }),
       });
 
       if (!res.ok) {
@@ -56,7 +57,7 @@ export default function TtsGenerator() {
     } finally {
       setLoading(false);
     }
-  }, [text, selectedMood]);
+  }, [text, selectedMood, voice]);
 
   const mixAndDownload = useCallback(
     async (musicUrl: string) => {
@@ -134,8 +135,7 @@ export default function TtsGenerator() {
     if (!ttsUrl) return;
     const a = document.createElement("a");
     a.href = ttsUrl;
-    a.download = `tts-${Date.now()}.wav`;
-    a.target = "_blank";
+    a.download = `tts-${Date.now()}.mp3`;
     a.click();
   }, [ttsUrl]);
 
@@ -157,6 +157,36 @@ export default function TtsGenerator() {
           maxLength={5000}
         />
         <p className="mt-1 text-sm text-gray-500">{text.length} / 5000자</p>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          음성 선택
+        </label>
+        <div className="flex flex-wrap gap-2 mb-4">
+          <button
+            type="button"
+            onClick={() => setVoice("sunhi")}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              voice === "sunhi"
+                ? "bg-indigo-600 text-white"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            }`}
+          >
+            선희 (여성)
+          </button>
+          <button
+            type="button"
+            onClick={() => setVoice("injoon")}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              voice === "injoon"
+                ? "bg-indigo-600 text-white"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            }`}
+          >
+            인준 (남성)
+          </button>
+        </div>
       </div>
 
       <div>

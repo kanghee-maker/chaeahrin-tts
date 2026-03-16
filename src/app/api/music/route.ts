@@ -2,45 +2,27 @@ import { NextRequest, NextResponse } from "next/server";
 
 export type MoodType = "calm" | "happy" | "energetic" | "sad" | "neutral";
 
-// Mixkit & Pixabay 무료 음악 (CC0/무료 사용 가능)
+// public/music/ 내 로컬 샘플 (scripts/generate-music-samples.js로 생성)
 const MUSIC_BY_MOOD: Record<MoodType, { url: string; name: string }[]> = {
   calm: [
-    {
-      url: "https://cdn.mixkit.co/music/preview/mixkit-serene-view-443.mp3",
-      name: "평화로운 풍경",
-    },
-    {
-      url: "https://cdn.mixkit.co/music/preview/mixkit-ambient-forest-442.mp3",
-      name: "잔잔한 숲",
-    },
+    { url: "/music/calm.wav", name: "평화로운 톤" },
+    { url: "/music/neutral.wav", name: "잔잔한 앰비언트" },
   ],
   happy: [
-    {
-      url: "https://cdn.mixkit.co/music/preview/mixkit-a-very-happy-christmas-897.mp3",
-      name: "밝은 멜로디",
-    },
-    {
-      url: "https://cdn.mixkit.co/music/preview/mixkit-gathering-in-the-sun-444.mp3",
-      name: "기분 좋은 날",
-    },
+    { url: "/music/happy.wav", name: "밝은 멜로디" },
+    { url: "/music/energetic.wav", name: "기분 좋은 톤" },
   ],
   energetic: [
-    {
-      url: "https://cdn.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3",
-      name: "업비트 음악",
-    },
+    { url: "/music/energetic.wav", name: "활기찬 톤" },
+    { url: "/music/happy.wav", name: "업비트" },
   ],
   sad: [
-    {
-      url: "https://cdn.mixkit.co/music/preview/mixkit-emotional-piano-2060.mp3",
-      name: "감성적인 피아노",
-    },
+    { url: "/music/sad.wav", name: "감성적인 톤" },
+    { url: "/music/calm.wav", name: "잔잔한" },
   ],
   neutral: [
-    {
-      url: "https://cdn.mixkit.co/music/preview/mixkit-serene-view-443.mp3",
-      name: "중립 배경음",
-    },
+    { url: "/music/neutral.wav", name: "중립 배경음" },
+    { url: "/music/calm.wav", name: "부드러운" },
   ],
 };
 

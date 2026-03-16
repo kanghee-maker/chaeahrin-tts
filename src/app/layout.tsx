@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "채아린 TTS - 한국어 음성 생성",
-  description: "Microsoft Edge TTS 기반 무료 한국어 TTS 웹 서비스. 텍스트를 입력하면 음성 파일을 생성하고, 배경 음악과 믹싱하여 다운로드할 수 있습니다.",
+  title: "우세림의 TTS 생성기",
+  description: "우세림의 TTS 생성기 - Microsoft Edge TTS 기반 무료 한국어 음성 생성, 배경 음악 믹싱",
 };
 
 export default function RootLayout({

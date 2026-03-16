@@ -3,11 +3,14 @@ import { EdgeTTS } from "edge-tts-universal";
 
 export const maxDuration = 60;
 
-const KOREAN_VOICE = "ko-KR-SunHiNeural";
+const KOREAN_VOICES: Record<string, string> = {
+  sunhi: "ko-KR-SunHiNeural",
+  injoon: "ko-KR-InJoonNeural",
+};
 
 export async function POST(request: NextRequest) {
   try {
-    const { text } = await request.json();
+    const { text, voice = "sunhi" } = await request.json();
 
     if (!text || typeof text !== "string") {
       return NextResponse.json(
@@ -31,7 +34,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const tts = new EdgeTTS(trimmedText, KOREAN_VOICE, {
+    const voiceId = KOREAN_VOICES[voice] || KOREAN_VOICES.sunhi;
+    const tts = new EdgeTTS(trimmedText, voiceId, {
       rate: "+10%",
       volume: "+0%",
       pitch: "+0Hz",

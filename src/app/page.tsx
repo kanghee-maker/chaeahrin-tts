@@ -6,7 +6,7 @@ export default function Home() {
       <main className="container mx-auto px-4 py-12 max-w-3xl">
         <div className="text-center mb-10">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            채아린 TTS
+            우세림의 TTS 생성기
           </h1>
           <p className="text-gray-600">
             Microsoft Edge TTS 기반 무료 한국어 음성 생성 · 배경 음악 믹싱

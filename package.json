@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "generate-music": "node scripts/generate-music-samples.js"
   },
   "dependencies": {
     "edge-tts-universal": "^1.4.0",
